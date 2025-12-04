@@ -1,0 +1,95 @@
+{{-- filepath: c:\laragon\www\ith\resources\views\user\index.blade.php --}}
+<x-app-layout>
+    <x-slot name="header">
+        <div class="flex items-center justify-between">
+            <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+                {{ __('Users') }}
+            </h2>
+            <a href="{{ route('users.create') }}" class="inline-flex items-center px-4 py-2 bg-blue-600 text-white rounded shadow-sm hover:bg-blue-700 text-sm font-semibold">
+                + Add User
+            </a>
+        </div>
+    </x-slot>
+    <div class="py-12">
+        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+            <div class="bg-white shadow rounded-lg overflow-hidden">
+                <div class="px-6 pt-6 text-gray-900">
+                    {{-- Tabs for user_type --}}
+                    <div class="mb-6 border-b border-gray-200" style="margin-left: -1.5rem; margin-right: -1.5rem; padding-left: 1.5rem; padding-right: 1.5rem;">
+                        @php
+                            $userTypeTab = request('type', 'all');
+                            $tabClasses = function($active) {
+                                return $active
+                                    ? 'inline-block px-4 py-2 text-sm font-semibold text-blue-700 bg-blue-50 border-b-2 border-blue-600 rounded-t transition'
+                                    : 'inline-block px-4 py-2 text-sm font-medium text-gray-500 hover:text-blue-700 hover:bg-gray-50 border-b-2 border-transparent rounded-t transition';
+                            };
+                            $tabTypes = [
+                                'all' => 'All',
+                                'admin' => 'Admin',
+                                'it' => 'IT',
+                                'user' => 'User',
+                                'vendor' => 'Vendor',
+                            ];
+                        @endphp
+                        <nav class="flex space-x-2" aria-label="Tabs">
+                            @foreach($tabTypes as $typeKey => $typeLabel)
+                                <a href="{{ route('users.index', array_merge(request()->except('page'), ['type' => $typeKey !== 'all' ? $typeKey : null])) }}"
+                                   class="{{ $tabClasses($userTypeTab === $typeKey) }}">
+                                    {{ $typeLabel }}
+                                </a>
+                            @endforeach
+                        </nav>
+                    </div>
+
+                    @if($users->hasPages())
+                        <div class="mb-4 pagination">
+                            {{ $users->links() }}
+                        </div>
+                    @endif
+                </div>
+
+                <table class="w-full divide-y divide-gray-200 text-sm">
+                    <thead class="bg-gray-50">
+                        <tr>
+                            <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">ID</th>
+                            <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Name</th>
+                            <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Email</th>
+                            <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Type</th>
+                            <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Department / Vendor</th>
+                            <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody class="bg-white divide-y divide-gray-100">
+                        @forelse($users as $user)
+                            <tr>
+                                <td class="px-4 py-2">{{ $user->id }}</td>
+                                <td class="px-4 py-2">{{ $user->name }}</td>
+                                <td class="px-4 py-2">{{ $user->email }}</td>
+                                <td class="px-4 py-2">{{ ucfirst($user->user_type) }}</td>
+                                <td class="px-4 py-2">
+                                    @if($user->user_type === 'vendor')
+                                        {{ $user->vendor?->name }}
+                                    @elseif($user->user_type === 'user')
+                                        {{ $user->department?->name }}
+                                    @endif
+                                </td>
+                                <td class="px-4 py-2">
+                                    <a href="{{ route('users.edit', $user) }}" class="text-yellow-600 hover:underline text-xs">Edit</a>
+                                    <form action="{{ route('users.destroy', $user) }}" method="POST" class="inline ml-2" onsubmit="return confirm('Delete this user?')">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="text-red-600 hover:underline text-xs">Delete</button>
+                                    </form>
+                                </td>
+                            </tr>
+                        @empty
+                            <tr>
+                                <td colspan="6" class="px-4 py-2 text-center text-gray-400">No users found.</td>
+                            </tr>
+                        @endforelse
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</x-app-layout>
