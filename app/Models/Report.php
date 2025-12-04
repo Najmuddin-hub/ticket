@@ -8,7 +8,7 @@ class Report extends Model
 {
     protected $fillable = ['name', 'report_type_id'];
 
-    public function reportType()
+    public function reportType(): BelongsTo
     {
         return $this->belongsTo(ReportType::class);
     }

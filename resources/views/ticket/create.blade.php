@@ -39,6 +39,15 @@
                             @error('report_type_id') <div class="text-red-500 text-xs">{{ $message }}</div> @enderror
                     </div>
 
+                    <div class="mb-4">
+                        <label class="block font-semibold mb-1">Report</label>
+                        <select id="report_id" name="report_id" class="w-full rounded border-gray-300">
+                            <option value="">-- Select Report --</option>
+                        </select>
+                            @error('report_type_id') <div class="text-red-500 text-xs">{{ $message }}</div> @enderror
+                    </div>
+
+
 
                     {{-- <div class="mb-4">
                             <label class="block font-semibold mb-1">Report Type</label>
@@ -80,6 +89,52 @@
     </div>
 
     <script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const categorySelect = document.querySelector('select[name="category_id"]');
+        const reportTypeSelect = document.querySelector('#report_type_id');
+        const reportSelect = document.querySelector('#report_id');
+
+        // When CATEGORY is selected
+        categorySelect.addEventListener('change', function () {
+            let categoryId = this.value;
+
+            reportTypeSelect.innerHTML = '<option value="">Loading...</option>';
+            reportSelect.innerHTML = '<option value="">-- Select Report --</option>';
+
+            if (categoryId) {
+                fetch(`/get-report-types/${categoryId}`)
+                    .then(res => res.json())
+                    .then(data => {
+                        reportTypeSelect.innerHTML = '<option value="">-- Select Report Type --</option>';
+                        data.forEach(rt => {
+                            reportTypeSelect.innerHTML += `<option value="${rt.id}">${rt.name}</option>`;
+                        });
+                    });
+                }
+            });
+
+            // When REPORT TYPE is selected
+            reportTypeSelect.addEventListener('change', function () {
+                let reportTypeId = this.value;
+
+                reportSelect.innerHTML = '<option value="">Loading...</option>';
+
+                if (reportTypeId) {
+                    fetch(`/get-reports/${reportTypeId}`)
+                        .then(res => res.json())
+                        .then(data => {
+                            reportSelect.innerHTML = '<option value="">-- Select Report --</option>';
+                            data.forEach(r => {
+                                reportSelect.innerHTML += `<option value="${r.id}">${r.name}</option>`;
+                            });
+                    });
+            }
+        });
+    });
+    </script>
+
+
+   {{-- <script>
         document.addEventListener('DOMContentLoaded', function () {
             const categorySelect = document.querySelector('select[name="category_id"]');
             const reportTypeSelect = document.querySelector('#report_type_id');
@@ -103,7 +158,7 @@
                 }
             });
         });
-    </script>
+    </script>--}}
 
 
     {{--<script>

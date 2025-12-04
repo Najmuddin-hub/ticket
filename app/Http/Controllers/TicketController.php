@@ -20,6 +20,7 @@ use App\Notifications\TicketCreated;
 use App\Notifications\TicketUpdated;
 use App\Services\TicketAutomationService;
 use App\Models\ReportType;
+use App\Models\Report;
 
 class TicketController extends Controller
 {
@@ -250,6 +251,12 @@ class TicketController extends Controller
     {
         $reportTypes = ReportType::where('category_id', $category_id)->get();
         return response()->json($reportTypes);
+    }
+
+    public function getReports($report_type_id)
+    {
+    $reports = Report::where('report_type_id', $report_type_id)->get();
+    return response()->json($reports);
     }
 
 

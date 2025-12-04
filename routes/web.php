@@ -17,6 +17,8 @@ Route::get('/', function () {
 
 Route::get('/dashboard', DashboardController::class)->middleware(['auth', 'verified'])->name('dashboard');
 Route::get('/get-report-types/{category}', [\App\Http\Controllers\TicketController::class, 'getReportTypes']);
+Route::get('/get-reports/{reportType}', [\App\Http\Controllers\TicketController::class, 'getReports']);
+
 
 
 //Route::get('/get-report-types/{category_id}', [TicketController::class, 'getReportTypes']);

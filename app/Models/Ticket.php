@@ -19,6 +19,8 @@ class Ticket extends Model
         'description',
         'user_id',
         'category_id',
+        'report_type_id',
+        'report_id',
         'ticket_status_id'
     ];
 
@@ -31,6 +33,17 @@ class Ticket extends Model
     {
         return $this->belongsTo(Category::class);
     }
+
+    public function reportType()
+    {
+        return $this->belongsTo(ReportType::class);
+    }
+
+    public function report()
+    {
+        return $this->belongsTo(Report::class);
+    }
+
 
     public function status(): BelongsTo
     {

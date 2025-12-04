@@ -28,6 +28,12 @@
                             <div>
                                 <span class="font-semibold">Category:</span> {{ $ticket->category?->name ?? '-' }}
                             </div>
+                            <div>
+                                <span class="font-semibold">Report Type:</span> {{ $ticket->reportType?->name ?? '-' }}
+                            </div>
+                            <div>
+                                <span class="font-semibold">Report:</span> {{ $ticket->report?->name ?? '-' }}
+                            </div>
                         </div>
                     </div>
                     <div class="mt-4 md:mt-0 text-sm text-gray-500">
