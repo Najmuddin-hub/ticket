@@ -1,0 +1,26 @@
+/* Minimal CSS variables approach.
+   Add these to your main CSS or use them as a separate file and include it.
+   The script toggles the "dark" class on <html>. */
+:root{
+  --bg: #ffffff;
+  --text: #0f172a;
+  --muted: #6b7280;
+}
+
+/* Dark overrides */
+html.dark {
+  --bg: #0b1220;
+  --text: #e6eef8;
+  --muted: #94a3b8;
+}
+
+/* Example usage */
+body {
+  background-color: var(--bg);
+  color: var(--text);
+  transition: background-color .2s ease, color .2s ease;
+}
+
+/* you can use .dark selectors too:
+html.dark .card { background: #0f1724; }
+*/
