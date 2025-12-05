@@ -11,32 +11,12 @@
         <link rel="preconnect" href="https://fonts.bunny.net">
         <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
 
-        <!-- Quick theme-preload script: applies stored theme or system preference
-             before CSS loads to avoid a flash-of-incorrect-theme (FOIT). -->
-        <script>
-          (function () {
-            try {
-              const stored = localStorage.getItem('theme-preference');
-              if (stored === 'dark') document.documentElement.classList.add('dark');
-              else if (stored === 'light') document.documentElement.classList.remove('dark');
-              else if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
-                document.documentElement.classList.add('dark');
-              }
-            } catch (e) { /* ignore */ }
-          })();
-        </script>
-
-        <!-- Scripts & Styles (Vite) -->
+        <!-- Scripts -->
         @vite(['resources/css/app.css', 'resources/js/app.js'])
     </head>
     <body class="font-sans antialiased">
         <div class="min-h-screen bg-gray-100">
             @include('layouts.navigation')
-
-            <!-- Theme toggle (placed after navigation; adjust placement as you like) -->
-            <div class="px-4 py-2 flex justify-end">
-                @include('components.theme-toggle')
-            </div>
 
             <!-- Page Heading -->
             @isset($header)
