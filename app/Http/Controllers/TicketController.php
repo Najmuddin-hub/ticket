@@ -235,6 +235,8 @@ class TicketController extends Controller
         $ticket = Ticket::findOrFail($ticketId);
         Gate::authorize('updateCategory', $ticket);
         $ticket->category_id = $request->category_id;
+        $ticket->report_type_id = $request->report_type_id;
+        $ticket->report_id = $request->report_id;
         $ticket->save();
         
         // Load relationships for notification

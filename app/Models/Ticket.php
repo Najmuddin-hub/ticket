@@ -34,12 +34,12 @@ class Ticket extends Model
         return $this->belongsTo(Category::class);
     }
 
-    public function reportType()
+    public function reportType(): BelongsTo
     {
         return $this->belongsTo(ReportType::class);
     }
 
-    public function report()
+    public function report(): BelongsTo
     {
         return $this->belongsTo(Report::class);
     }
