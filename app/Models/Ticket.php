@@ -36,12 +36,12 @@ class Ticket extends Model
 
     public function reportType(): BelongsTo
     {
-        return $this->belongsTo(ReportType::class);
+        return $this->belongsTo(\App\Models\ReportType::class, 'report_type_id');
     }
 
     public function report(): BelongsTo
     {
-        return $this->belongsTo(Report::class);
+        return $this->belongsTo(\App\Models\Report::class, 'report_id');
     }
 
 

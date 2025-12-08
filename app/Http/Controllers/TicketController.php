@@ -63,6 +63,8 @@ class TicketController extends Controller
             'comments.user', // Existing
             'status',        // Existing
             'category',      // Existing
+            'reportType',    // Existing
+            'report',        // Existing
             'assignees' => function ($query) { // Modified to include vendor for assignees
                 $query->with('vendor');
             },
@@ -211,6 +213,8 @@ class TicketController extends Controller
             'title' => 'required|string|max:255',
             'description' => 'required|string',
             'category_id' => 'required|exists:categories,id',
+            'report_type_id' => 'required|exists:report_types,id',
+            'report_id' => 'required|exists:reports,id',
         ]);
 
         $data['user_id'] = auth()->id();
