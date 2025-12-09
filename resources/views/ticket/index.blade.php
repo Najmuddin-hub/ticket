@@ -180,7 +180,7 @@
                                 </td>
                                 <td class="px-4 py-2">{{ $ticket->category?->name }}</td>
                                 <td class="px-4 py-2">{{ $ticket->user?->name }}</td>
-                                <td class="px-4 py-2">{{ $ticket->user->department?->name }}</td>
+                                <td class="px-4 py-2">{{ $ticket->user?->department?->name ?? '-' }}</td>
                                 <td class="px-4 py-2">
                                     @foreach($ticket->assignees as $assignee)
                                         @php
