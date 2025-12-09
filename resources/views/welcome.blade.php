@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>ITH Helpdesk System</title>
+    <title>Tiket Aduan Kraftangan</title>
     <link href="https://fonts.bunny.net/css?family=figtree:400,600&display=swap" rel="stylesheet" />
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <style>
@@ -16,7 +16,7 @@
 <body class="antialiased bg-gray-50 min-h-screen flex flex-col">
     <div class="hero-bg py-16">
         <div class="max-w-3xl mx-auto text-center text-white">
-            <h1 class="text-4xl md:text-5xl font-bold mb-4">ITH Helpdesk System</h1>
+            <h1 class="text-4xl md:text-5xl font-bold mb-4">Tiket Aduan Kraftangan</h1>
             <p class="text-lg md:text-xl mb-8">A modern IT ticketing and support platform for your organization.</p>
             @auth
                 <a href="{{ route('dashboard') }}" class="inline-block px-6 py-3 bg-white text-blue-700 font-semibold rounded shadow hover:bg-blue-50 transition">Go to Dashboard</a>
@@ -53,7 +53,7 @@
             <div class="mt-12 text-center text-xs text-gray-400">
                 &copy; {{ date('Y') }} ITH Helpdesk System &mdash; Powered by Laravel & GitHub Copilot
                 <br>
-                <a href="https://github.com/kidino/ith" class="text-blue-500 hover:underline" target="_blank" rel="noopener">View on GitHub</a>
+                {{-- <a href="https://github.com/kidino/ith" class="text-blue-500 hover:underline" target="_blank" rel="noopener">View on GitHub</a> --}}
             </div>
         </div>
     </div>
