@@ -224,8 +224,38 @@ class TicketController extends Controller
         // Load relationships for notification
         $ticket->load(['user', 'category']);
         
+        
         // Send notifications to relevant users
         $recipients = $this->getNotificationRecipients($ticket, 'created');
+
+        //new added code 16/12/2025
+        // CONFIG-DRIVEN: notify a specific user mapped to the category (by id preferred)
+        $responsibleUserId = null;
+        if ($ticket->category) {
+            // try id-based mapping first
+            $responsibleUserId = config('category_responsible.' . $ticket->category->id);
+
+            // fallback to name-based mapping (uncomment if you added name-based keys in config)
+            if (! $responsibleUserId) {
+                $responsibleUserId = config('category_responsible.' . $ticket->category->name);
+            }
+        }
+
+        if ($responsibleUserId) {
+            $responsibleUser = User::find($responsibleUserId);
+            if ($responsibleUser) {
+                $recipients = $recipients->push($responsibleUser);
+            }
+        }
+
+        // Remove duplicates and exclude current user
+        $recipients = $recipients->unique('id')->filter(function($user) {
+            return $user->id !== auth()->id();
+        });
+
+        //until here 16/12/2025
+
+        // Send notifications to relevant users
         Notification::send($recipients, new TicketCreated($ticket));
         
         return redirect()->route('tickets.mine', $ticket)->with('success', 'Ticket created.');
