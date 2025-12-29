@@ -6,7 +6,7 @@
                 {{ __('Users') }}
             </h2>
             <a href="{{ route('users.create') }}" class="inline-flex items-center px-4 py-2 bg-blue-600 text-white rounded shadow-sm hover:bg-blue-700 text-sm font-semibold">
-                + Add User
+                + Tambah Pengguna
             </a>
         </div>
     </x-slot>
@@ -24,10 +24,10 @@
                                     : 'inline-block px-4 py-2 text-sm font-medium text-gray-500 hover:text-blue-700 hover:bg-gray-50 border-b-2 border-transparent rounded-t transition';
                             };
                             $tabTypes = [
-                                'all' => 'All',
+                                'all' => 'Semua',
                                 'admin' => 'Admin',
-                                'it' => 'IT',
-                                'user' => 'User',
+                                'it' => 'Pengurusan',
+                                'user' => 'Pengguna',
                                 'vendor' => 'Vendor',
                             ];
                         @endphp
