@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Create New Ticket') }}
+            Cipta Tiket Aduan
         </h2>
     </x-slot>
     <div class="py-12">
@@ -9,19 +9,19 @@
             <div class="bg-white shadow rounded-lg p-6">
 
             
-                <form method="POST" action="{{ route('tickets.store') }}">
+                <form method="POST" action="{{ route('tickets.store') }}" enctype="multipart/form-data">
                     @csrf
                     <div class="mb-4">
-                        <label class="block font-semibold mb-1">Title</label>
+                        <label class="block font-semibold mb-1">Tajuk</label>
                         <input type="text" name="title" class="w-full rounded border-gray-300" required value="{{ old('title') }}">
                         @error('title') <div class="text-red-500 text-xs">{{ $message }}</div> @enderror
                     </div>
 
 
                     <div class="mb-4">
-                            <label class="block font-semibold mb-1">Category</label>
+                            <label class="block font-semibold mb-1">Kategori</label>
                             <select name="category_id" class="w-full rounded border-gray-300">
-                                <option value="">-- Select Category --</option>
+                                <option value="">-- Pilih Kategori --</option>
                                 @foreach($categories as $id => $category)
                                     <option value="{{ $id }}" @if(old('category_id') == $id) selected @endif>
                                         {{ $category }}
@@ -32,17 +32,17 @@
                     </div>
 
                     <div class="mb-4">
-                        <label class="block font-semibold mb-1">Report Type</label>
+                        <label class="block font-semibold mb-1">Jenis Aduan</label>
                         <select id="report_type_id" name="report_type_id" class="w-full rounded border-gray-300">
-                            <option value="">-- Select Report Type --</option>
+                            <option value="">-- Pilih Jenis Aduan --</option>
                         </select>
                             @error('report_type_id') <div class="text-red-500 text-xs">{{ $message }}</div> @enderror
                     </div>
 
                     <div class="mb-4">
-                        <label class="block font-semibold mb-1">Report</label>
+                        <label class="block font-semibold mb-1">Aduan</label>
                         <select id="report_id" name="report_id" class="w-full rounded border-gray-300">
-                            <option value="">-- Select Report --</option>
+                            <option value="">-- Pilih Aduan --</option>
                         </select>
                             @error('report_type_id') <div class="text-red-500 text-xs">{{ $message }}</div> @enderror
                     </div>
@@ -71,17 +71,62 @@
 
 
                     <div class="mb-4">
-                        <label class="block font-semibold mb-1">Description</label>
+                        <label class="block font-semibold mb-1">Keterangan</label>
                         <textarea name="description" class="w-full rounded border-gray-300" rows="4">{{ old('description') }}</textarea>
                         @error('description') <div class="text-red-500 text-xs">{{ $message }}</div> @enderror
                     </div>
+
+                    <div class="mb-4">
+    <label class="block font-semibold mb-1">Gambar</label>
+
+    <div class="flex items-center gap-3">
+        <!-- Hidden real file input -->
+        <input
+            type="file"
+            name="photo"
+            id="photo"
+            class="hidden"
+            accept="image/*"
+        >
+
+        <!-- Custom button -->
+        <button
+            type="button"
+            onclick="document.getElementById('photo').click()"
+            class="px-4 py-2 !bg-gray-600 rounded-lg border border-gray-900 hover:bg-gray-700 text-sm"
+        >
+            Pilih gambar
+        </button>
+
+        <!-- File name display -->
+        <span
+            id="photo-name"
+            class="text-sm text-gray-500"
+        >
+            Tiada gambar dipilih
+        </span>
+    </div>
+
+    @error('photo')
+        <div class="text-red-500 text-xs mt-1">{{ $message }}</div>
+    @enderror
+</div>
+
+
+                    {{--<div class="mb-4">
+                        <label class="block font-semblod mb-1">Gambar</label>
+                        <input type="file" name="photo" class="w-full rounded border-gray-300" accept="image/*">
+                        @error('photo')
+                            <div class="text-red-500 text-xs">{{ $message }}</div>
+                            @enderror
+                    </div>--}}
 
 
 
 
                     <div>
-                        <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded">Create Ticket</button>
-                        <a href="{{ route('tickets.index') }}" class="ml-2 text-gray-600 hover:underline">Cancel</a>
+                        <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded">Hantar Aduan</button>
+                        <a href="{{ route('tickets.index') }}" class="ml-2 text-gray-600 hover:underline">Batal</a>
                     </div>
                 </form>
             </div>
@@ -94,18 +139,22 @@
         const reportTypeSelect = document.querySelector('#report_type_id');
         const reportSelect = document.querySelector('#report_id');
 
+         // 🔹 Photo upload elements
+        const photoInput = document.getElementById('photo');
+        const photoName = document.getElementById('photo-name');
+
         // When CATEGORY is selected
         categorySelect.addEventListener('change', function () {
             let categoryId = this.value;
 
             reportTypeSelect.innerHTML = '<option value="">Loading...</option>';
-            reportSelect.innerHTML = '<option value="">-- Select Report --</option>';
+            reportSelect.innerHTML = '<option value="">-- Pilih Aduan --</option>';
 
             if (categoryId) {
                 fetch(`/get-report-types/${categoryId}`)
                     .then(res => res.json())
                     .then(data => {
-                        reportTypeSelect.innerHTML = '<option value="">-- Select Report Type --</option>';
+                        reportTypeSelect.innerHTML = '<option value="">-- Pilih Jenis Aduan --</option>';
                         data.forEach(rt => {
                             reportTypeSelect.innerHTML += `<option value="${rt.id}">${rt.name}</option>`;
                         });
@@ -123,13 +172,22 @@
                     fetch(`/get-reports/${reportTypeId}`)
                         .then(res => res.json())
                         .then(data => {
-                            reportSelect.innerHTML = '<option value="">-- Select Report --</option>';
+                            reportSelect.innerHTML = '<option value="">-- Pilih Aduan --</option>';
                             data.forEach(r => {
                                 reportSelect.innerHTML += `<option value="${r.id}">${r.name}</option>`;
                             });
                     });
             }
         });
+
+        // 🔹 Update selected photo name
+        if (photoInput && photoName) {
+            photoInput.addEventListener('change', function () {
+                photoName.textContent = this.files.length
+                    ? this.files[0].name
+                    : 'Tiada gambar dipilih';
+            });
+        }
     });
     </script>
 

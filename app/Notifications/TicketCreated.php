@@ -38,13 +38,13 @@ class TicketCreated extends Notification
     public function toMail(object $notifiable): MailMessage
     {
         return (new MailMessage)
-            ->subject('New Ticket Created: ' . $this->ticket->title)
-            ->line('A new ticket has been created.')
-            ->line('Title: ' . $this->ticket->title)
-            ->line('Category: ' . $this->ticket->category->name)
-            ->line('Created by: ' . $this->ticket->user->name)
-            ->action('View Ticket', route('tickets.show', $this->ticket))
-            ->line('Please review and take appropriate action.');
+            ->subject('Tiket Baharu: ' . $this->ticket->title)
+            ->line('Tiket baharu telah dibuat.')
+            ->line('Tajuk: ' . $this->ticket->title)
+            ->line('Kategori: ' . $this->ticket->category->name)
+            ->line('Dibuat Oleh: ' . $this->ticket->user->name)
+            ->action('Lihat Tiket', route('tickets.show', $this->ticket))
+            ->line('Sila semak tiket untuk maklumat lanjut.');
     }
 
     /**
@@ -59,7 +59,7 @@ class TicketCreated extends Notification
             'ticket_title' => $this->ticket->title,
             'created_by' => $this->ticket->user->name,
             'category' => $this->ticket->category->name,
-            'message' => "New ticket '{$this->ticket->title}' has been created by {$this->ticket->user->name}",
+            'message' => "Tiket baharu '{$this->ticket->title}' dibuat oleh {$this->ticket->user->name}",
         ];
     }
 

@@ -21,7 +21,8 @@ class Ticket extends Model
         'category_id',
         'report_type_id',
         'report_id',
-        'ticket_status_id'
+        'ticket_status_id',
+        'photo'
     ];
 
     public function user(): BelongsTo

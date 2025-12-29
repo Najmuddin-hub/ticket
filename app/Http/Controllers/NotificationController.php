@@ -24,7 +24,7 @@ class NotificationController extends Controller
         $notification = Auth::user()->notifications()->findOrFail($notificationId);
         $notification->markAsRead();
         
-        return redirect()->back()->with('success', 'Notification marked as read.');
+        return redirect()->back()->with('berjaya', 'Notifikasi ditandakan sebagai dibaca.');
     }
 
     /**
@@ -34,6 +34,6 @@ class NotificationController extends Controller
     {
         Auth::user()->unreadNotifications->markAsRead();
         
-        return redirect()->back()->with('success', 'All notifications marked as read.');
+        return redirect()->back()->with('berjaya', 'Semua notifikasi ditandakan sebagai dibaca.');
     }
 }

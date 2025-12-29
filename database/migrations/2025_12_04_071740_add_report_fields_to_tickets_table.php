@@ -9,8 +9,12 @@ return new class extends Migration
    public function up()
     {
         Schema::table('tickets', function (Blueprint $table) {
-            $table->unsignedBigInteger('report_type_id')->nullable()->after('category_id');
-            $table->unsignedBigInteger('report_id')->nullable()->after('report_type_id');
+            if (!Schema::hasColumn('tickets', 'report_type_id')) {
+                $table->unsignedBigInteger('report_type_id')->nullable()->after('category_id');
+            }
+            if (!Schema::hasColumn('tickets', 'report_id')) {
+                $table->unsignedBigInteger('report_id')->nullable()->after('report_type_id');
+            }
         });
     }
 

@@ -5,9 +5,17 @@
             <div class="flex">
                 <!-- Logo -->
                 <div class="shrink-0 flex items-center">
-                    <a href="{{ route('dashboard') }}">
-                        <x-application-logo class="block h-9 w-auto fill-current text-gray-800" />
+                    @php
+                        $userType = Auth::user()->user_type ?? null;
+                    @endphp
+
+                    <a href="{{ in_array($userType, ['user','vendor']) ? route('tickets.index') :route('dashboard')}}">
+                        <x-application-logo class="h-14 w-auto" />
                     </a>
+
+                   <!-- <a href="{{ route('dashboard') }}">
+                        <x-application-logo class="h-14 w-auto" />
+                    </a> -->
                 </div>
 
                 <!-- Navigation Links -->
@@ -18,12 +26,12 @@
 
                     @if($userType !== 'user' && $userType !== 'vendor')
                         <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
-                            {{ __('Dashboard') }}
+                            Halaman Utama
                         </x-nav-link>
                     @endif
 
                     <x-nav-link :href="route('tickets.index')" :active="request()->routeIs('tickets*')">
-                        {{ __('Tickets') }}
+                        Tiket
                     </x-nav-link>
 
                     @if($userType === 'admin')
@@ -31,7 +39,7 @@
                         <x-dropdown align="left">
                             <x-slot name="trigger">
                                 <button class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 bg-white hover:text-gray-700 focus:outline-none transition ease-in-out duration-150">
-                                    <span>Settings</span>
+                                    <span>Tetapan</span>
                                     <svg class="ms-2 -me-0.5 h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20" stroke="currentColor">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7l3-3 3 3m0 6l-3 3-3-3" />
                                     </svg>
@@ -39,23 +47,23 @@
                             </x-slot>
                             <x-slot name="content">
                                 <x-dropdown-link :href="route('ticket-statuses.index')">
-                                    {{ __('Ticket Statuses') }}
+                                    Status Tiket {{-- {{ __('Ticket Statuses') }} --}}
                                 </x-dropdown-link>
 
                                 <x-dropdown-link :href="route('categories.index')">
-                                    {{ __('Categories') }}
+                                    Kategori{{-- {{ __('Categories') }} --}}
                                 </x-dropdown-link>
 
                                 <x-dropdown-link :href="route('departments.index')">
-                                    {{ __('Departments') }}
+                                    Bahagian/Seksyen {{-- {{ __('Departments') }} --}}
                                 </x-dropdown-link>
 
                                 <x-dropdown-link :href="route('users.index')">
-                                    {{ __('Users') }}
+                                    Pengguna {{-- {{ __('Users') }} --}}
                                 </x-dropdown-link>
 
                                 <x-dropdown-link :href="route('vendors.index')">
-                                    {{ __('Vendors') }}
+                                    Vendor {{-- {{ __('Vendors') }} --}}
                                 </x-dropdown-link>
 
                             </x-slot>
@@ -75,7 +83,7 @@
                 @php
                     $unreadCount = Auth::user()->unreadNotifications->count();
                 @endphp
-                <x-dropdown align="right" width="80">
+                <x-dropdown align="right" width="96">
                     <x-slot name="trigger">
                         <button class="relative inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 bg-white hover:text-gray-700 focus:outline-none transition ease-in-out duration-150">
                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -91,7 +99,7 @@
 
                     <x-slot name="content">
                         <div class="px-4 py-2 text-xs text-gray-400 border-b">
-                            Notifications
+                            Notifikasi
                         </div>
                         @forelse(Auth::user()->notifications->take(5) as $notification)
                             <div class="px-4 py-3 text-xs {{ $notification->read_at ? 'text-gray-600' : 'text-gray-900 bg-blue-50' }} border-b hover:bg-gray-50">
@@ -101,25 +109,25 @@
                                     @if(\App\Models\Ticket::find($notification->data['ticket_id']))
                                         <div class="mt-1">
                                             <a href="{{ route('tickets.show', $notification->data['ticket_id']) }}" 
-                                               class="text-blue-600 hover:underline">View Ticket</a>
+                                               class="text-blue-600 hover:underline">Lihat Tiket</a>
                                         </div>
                                     @endif
                                 @endisset
                                 @if(!$notification->read_at)
                                     <form method="POST" action="{{ route('notifications.mark-read', $notification->id) }}" class="inline mt-1">
                                         @csrf
-                                        <button type="submit" class="text-blue-600 hover:underline">Mark as read</button>
+                                        <button type="submit" class="text-blue-600 hover:underline">Tanda sebagai dibaca</button>
                                     </form>
                                 @endif
                             </div>
                         @empty
                             <div class="px-4 py-3 text-xs text-gray-500">
-                                No notifications
+                                Tiada notifikasi
                             </div>
                         @endforelse
                         @if(Auth::user()->notifications->count() > 5)
                             <div class="px-4 py-2">
-                                <a href="{{ route('notifications.index') }}" class="text-xs text-blue-600 hover:underline">View all notifications</a>
+                                <a href="{{ route('notifications.index') }}" class="text-xs text-blue-600 hover:underline">Lihat semua notifikasi</a>
                             </div>
                         @endif
                     </x-slot>
@@ -141,7 +149,7 @@
                     </x-slot>
                     <x-slot name="content">
                         <x-dropdown-link :href="route('profile.edit')">
-                            {{ __('Profile') }}
+                            Profil
                         </x-dropdown-link>
                         <!-- Authentication -->
                         <form method="POST" action="{{ route('logout') }}">
@@ -149,7 +157,7 @@
                             <x-dropdown-link :href="route('logout')"
                                     onclick="event.preventDefault();
                                                 this.closest('form').submit();">
-                                {{ __('Log Out') }}
+                                Log Keluar
                             </x-dropdown-link>
                         </form>
                     </x-slot>

@@ -1,17 +1,44 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Dashboard') }}
+            Halaman Utama
         </h2>
     </x-slot>
 
     <div class="py-10 bg-gray-50 min-h-screen">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10">
 
+            {{-- Month Filter --}}
+            <div class="flex items-center justify-between">
+                <div class="text-sm text-gray-600">
+                    Paparan:
+                    <span class="font-semibold">{{ $start->format('d/m/Y') }}</span>
+                    hingga
+                    <span class="font-semibold">{{ $end->format('d/m/Y') }}</span>
+                </div>
+
+                <form method="GET">
+                    <label class="text-sm text-gray-700 mr-2">Bulan:</label>
+                    <select
+                        name="month"
+                        class="rounded border-gray-300 text-sm py-1 px-2"
+                        onchange="this.form.submit()"
+                    >
+                        @foreach($monthOptions as $m)
+                            <option value="{{ $m['value'] }}"
+                                {{ ($selectedMonth ?? now()->format('Y-m')) == $m['value'] ? 'selected' : '' }}>
+                                {{ $m['label'] }}
+                            </option>
+                        @endforeach
+                    </select>
+                </form>
+            </div>
+
+
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
                 {{-- Tickets by Status --}}
                 <div class="bg-white rounded-xl shadow p-6 flex flex-col col-span-1">
-                    <h3 class="font-semibold mb-4 text-gray-700">Tickets by Status</h3>
+                    <h3 class="font-semibold mb-4 text-gray-700">Tiket mengikut Status</h3>
                     <ul class="divide-y divide-gray-100">
                         @foreach($statusCounts as $statusName => $count)
                             @php
@@ -29,7 +56,7 @@
                 </div>
                 {{-- Pie Chart: Tickets by Category --}}
                 <div class="bg-white rounded-xl shadow p-6 flex flex-col col-span-1">
-                    <h3 class="font-semibold mb-4 text-gray-700">Tickets by Category (%)</h3>
+                    <h3 class="font-semibold mb-4 text-gray-700">Tiket mengikut Kategori (%)</h3>
                     <div class="flex-1 flex items-center justify-center">
                         <canvas id="ticketsByCategoryPie"></canvas>
                     </div>
@@ -38,7 +65,7 @@
                 <div class="flex flex-col gap-6 col-span-1">
                     <div class="bg-gradient-to-r from-blue-500 to-blue-700 rounded-xl shadow flex items-center p-6">
                         <div class="flex-1">
-                            <div class="text-sm text-blue-100 font-semibold">My Tasks</div>
+                            <div class="text-sm text-blue-100 font-semibold">Tugasan</div>
                             <div class="text-4xl font-bold text-white">{{ $assignedToMeCount }}</div>
                         </div>
                         <div class="ml-4 flex items-center justify-center w-14 h-14 rounded-full bg-blue-600/30">
@@ -47,7 +74,7 @@
                     </div>
                     <div class="bg-gradient-to-r from-green-500 to-green-700 rounded-xl shadow flex items-center p-6">
                         <div class="flex-1">
-                            <div class="text-sm text-green-100 font-semibold">My Tickets</div>
+                            <div class="text-sm text-green-100 font-semibold">Tiket Saya</div>
                             <div class="text-4xl font-bold text-white">{{ $createdByMeCount }}</div>
                         </div>
                         <div class="ml-4 flex items-center justify-center w-14 h-14 rounded-full bg-green-600/30">
@@ -60,14 +87,14 @@
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                 {{-- Tickets by Department --}}
                 <div class="bg-white rounded-xl shadow p-6 flex flex-col">
-                    <h3 class="font-semibold mb-4 text-gray-700">Tickets by Department</h3>
+                    <h3 class="font-semibold mb-4 text-gray-700">Tiket mengikut Bahagian/Seksyen</h3>
                     <div class="flex-1 flex items-center justify-center">
                         <canvas id="ticketsByDepartmentBar"></canvas>
                     </div>
                 </div>
                 {{-- Bar Chart: Tickets by Category --}}
                 <div class="bg-white rounded-xl shadow p-6 flex flex-col">
-                    <h3 class="font-semibold mb-4 text-gray-700">Tickets by Category (Count)</h3>
+                    <h3 class="font-semibold mb-4 text-gray-700">Tiket mengikut Kategori (Kiraan)</h3>
                     <div class="flex-1 flex items-center justify-center">
                         <canvas id="ticketsByCategoryBar"></canvas>
                     </div>

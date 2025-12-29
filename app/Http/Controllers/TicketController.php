@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Notification;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Facades\Storage; //for file storage
 use App\Http\Controllers\Traits\ManagesTicketSorting;
 use App\Models\Category;
 use App\Models\Department;
@@ -208,6 +209,19 @@ class TicketController extends Controller
 
     public function store(Request $request)
     {
+
+
+        // 🔍 DEBUG FILE UPLOAD (TEMPORARY)
+        //if ($request->hasFile('photo')) {
+            //dd([
+              //  'isValid' => $request->file('photo')->isValid(),
+                //'error'   => $request->file('photo')->getError(),
+                //'message' => $request->file('photo')->getErrorMessage(),
+                //'size'    => $request->file('photo')->getSize(),
+                //'mime'    => $request->file('photo')->getMimeType(),
+            //]);
+         //}
+
         Gate::authorize('create', Ticket::class);
         $data = $request->validate([
             'title' => 'required|string|max:255',
@@ -215,7 +229,12 @@ class TicketController extends Controller
             'category_id' => 'required|exists:categories,id',
             'report_type_id' => 'required|exists:report_types,id',
             'report_id' => 'required|exists:reports,id',
+            'photo' => 'nullable|image|mimes:jpg,jpeg,png|max:50000', // New validation rule for photo
         ]);
+
+        if ($request->hasFile('photo')) {
+            $data['photo'] = $request->file('photo')->store('tickets', 'public');
+        }
 
         $data['user_id'] = auth()->id();
         $data['ticket_status_id'] = TicketStatus::where('default_status', true)->value('id');

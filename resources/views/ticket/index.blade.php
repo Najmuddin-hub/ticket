@@ -2,14 +2,14 @@
     <x-slot name="header">
         <div class="flex items-center justify-between">
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-                {{ __('Tickets') }}
+                Tiket Aduan
             </h2>
             @php
                 $userType = Auth::user()->user_type ?? null;
             @endphp
             @if($userType !== 'vendor')
                 <a href="{{ route('tickets.create') }}" class="inline-flex items-center px-4 py-2 bg-blue-600 text-white rounded shadow-sm hover:bg-blue-700 text-sm font-semibold">
-                    + New Ticket
+                    + Aduan Baru
                 </a>
             @endif
         </div>
@@ -34,7 +34,7 @@
                                 <a href="{{ route('tickets.index') }}"
                                    class="{{ $tabClasses($tab == 'all') }}">
                                     <svg class="inline w-4 h-4 mr-1 text-blue-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V7"></path><path d="M16 3v4"></path><path d="M8 3v4"></path></svg>
-                                    All Tickets
+                                    Semua Tiket Aduan
                                 </a>
                             @endif
 
@@ -42,7 +42,7 @@
                                 <a href="{{ route('tickets.mine') }}"
                                    class="{{ $tabClasses($tab == 'my') }}">
                                     <svg class="inline w-4 h-4 mr-1 text-blue-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M5.121 17.804A13.937 13.937 0 0112 15c2.5 0 4.847.655 6.879 1.804"></path><path d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
-                                    My Tickets
+                                    Tiket Aduan
                                 </a>
                             @endif
 
@@ -50,7 +50,7 @@
                                 <a href="{{ route('tickets.tasks') }}"
                                    class="{{ $tabClasses($tab == 'tasks') }}">
                                     <svg class="inline w-4 h-4 mr-1 text-blue-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 17v-2a2 2 0 012-2h2a2 2 0 012 2v2"></path><path d="M12 12v.01"></path><path d="M17 21H7a2 2 0 01-2-2V7a2 2 0 012-2h3l2-2 2 2h3a2 2 0 012 2v12a2 2 0 01-2 2z"></path></svg>
-                                    My Tasks
+                                    Tugasan
                                 </a>
                             @endif
                         </nav>
@@ -69,7 +69,7 @@
                         <div>
                             <label for="status" class="mr-2 text-xs font-medium text-gray-700">Status:</label>
                             <select name="status" id="status" class="rounded border-gray-300 text-xs py-1 px-2" onchange="this.form.submit()">
-                                <option value="">All</option>
+                                <option value="">Semua</option>
                                 @foreach($viewStatuses as $id => $name)
                                     <option value="{{ $id }}" @if($selectedStatus == $id) selected @endif>
                                         {{ $name }}
@@ -78,9 +78,9 @@
                             </select>
                         </div>
                         <div>
-                            <label for="category" class="mr-2 text-xs font-medium text-gray-700">Category:</label>
+                            <label for="category" class="mr-2 text-xs font-medium text-gray-700">Kategori:</label>
                             <select name="category" id="category" class="rounded border-gray-300 text-xs py-1 px-2" onchange="this.form.submit()">
-                                <option value="">All</option>
+                                <option value="">Semua</option>
                                 @foreach($viewCategories as $id => $name)
                                     <option value="{{ $id }}" @if($selectedCategory == $id) selected @endif>
                                         {{ $name }}
@@ -125,12 +125,12 @@
                         <tr>
                             <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">
                                 <a href="{{ sortUrl('created_at') }}" class="hover:underline flex items-center">
-                                    Date {!! sortIcon('created_at') !!}
+                                    Tarikh {!! sortIcon('created_at') !!}
                                 </a>
                             </th>
                             <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">
                                 <a href="{{ sortUrl('title') }}" class="hover:underline flex items-center">
-                                    Title {!! sortIcon('title') !!}
+                                    Tajuk {!! sortIcon('title') !!}
                                 </a>
                             </th>
                             <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">
@@ -140,24 +140,24 @@
                             </th>
                             <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">
                                 <a href="{{ sortUrl('category') }}" class="hover:underline flex items-center">
-                                    Category {!! sortIcon('category') !!}
+                                    Kategori {!! sortIcon('category') !!}
                                 </a>
                             </th>
                             <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">
                                 <a href="{{ sortUrl('user') }}" class="hover:underline flex items-center">
-                                    By {!! sortIcon('user') !!}
+                                    Dibuat Oleh {!! sortIcon('user') !!}
                                 </a>
                             </th>
                             <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">
                                 <a href="{{ sortUrl('department') }}" class="hover:underline flex items-center">
-                                    Department {!! sortIcon('department') !!}
+                                    Bahagian/Seksyen {!! sortIcon('department') !!}
                                 </a>
                             </th>
                             <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">
-                                Assignees
+                                Petugas
                             </th>
                             <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">
-                                Actions
+                                Lihat Tiket
                             </th>
                         </tr>
                     </thead>
@@ -192,12 +192,12 @@
                                     @endforeach
                                 </td>
                                 <td class="px-4 py-2">
-                                    <a href="{{ route('tickets.show', $ticket) }}" class="text-blue-600 hover:underline text-xs">View</a>
+                                    <a href="{{ route('tickets.show', $ticket) }}" class="text-blue-600 hover:underline text-xs">Lihat</a>
                                 </td>
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="8" class="px-4 py-2 text-center text-gray-400">No tickets found.</td>
+                                <td colspan="8" class="px-4 py-2 text-center text-gray-400">Tiada tiket.</td>
                             </tr>
                         @endforelse
                     </tbody>

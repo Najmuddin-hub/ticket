@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Ticket') }} : {{ $ticket->title }} (ID: {{ $ticket->id }})
+            Tiket : {{ $ticket->title }} (ID: {{ $ticket->id }})
         </h2>
     </x-slot>
 
@@ -26,33 +26,43 @@
                                 @endif
                             </div>
                             <div>
-                                <span class="font-semibold">Category:</span> {{ $ticket->category?->name ?? '-' }}
+                                <span class="font-semibold">Kategori:</span> {{ $ticket->category?->name ?? '-' }}
                             </div>
                             <div>
-                                <span class="font-semibold">Report Type:</span> {{ $ticket->reportType?->name ?? '-' }}
+                                <span class="font-semibold">Jenis Laporan:</span> {{ $ticket->reportType?->name ?? '-' }}
                             </div>
                             <div>
-                                <span class="font-semibold">Report:</span> {{ $ticket->report?->name ?? '-' }}
+                                <span class="font-semibold">Aduan:</span> {{ $ticket->report?->name ?? '-' }}
                             </div>
                         </div>
                     </div>
                     <div class="mt-4 md:mt-0 text-sm text-gray-500">
-                        <div><span class="font-semibold">Created by:</span> {{ $ticket->user?->name ?? '-' }}</div>
-                        <div><span class="font-semibold">Department:</span> {{ $ticket->user?->department->name ?? '-' }}</div>
-                        <div><span class="font-semibold">Created at:</span> {{ $ticket->created_at->format('Y-m-d H:i') }}</div>
+                        <div><span class="font-semibold">Dibuat oleh:</span> {{ $ticket->user?->name ?? '-' }}</div>
+                        <div><span class="font-semibold">Bahagian/Seksyen:</span> {{ $ticket->user?->department->name ?? '-' }}</div>
+                        <div><span class="font-semibold">Dibuat pada:</span> {{ $ticket->created_at->format('Y-m-d H:i') }}</div>
                     </div>
                 </div>
 
                 <div class="px-8 py-6 grid grid-cols-1 md:grid-cols-3 gap-8">
                     <div class="md:col-span-2">
                         <div class="mb-6">
-                            <div class="font-semibold text-gray-700 mb-2">Description</div>
+                            <div class="font-semibold text-gray-700 mb-2">Keterangan</div>
                             <div class="bg-gray-50 rounded p-4 text-gray-800 min-h-[60px]">{{ $ticket->description }}</div>
+                            @if($ticket->photo)
+                                <div class="mb-6">
+                                    <div class="font-semibold text-gray-700 mb-2">Gambar</div>
+                                    <img
+                                        src="{{ asset('storage/' . $ticket->photo) }}"
+                                        class="max-w-sm rounded border"
+                                        alt="Ticket photo"
+                                    >
+                                </div>
+                            @endif
                         </div>
 
                         <div class="mb-8">
                             <div class="flex items-center justify-between mb-2">
-                                <h4 class="font-semibold text-gray-700">Comments</h4>
+                                <h4 class="font-semibold text-gray-700">Komen</h4>
                             </div>
                             <div class="space-y-4">
                                 @forelse($ticket->comments as $comment)
@@ -64,16 +74,16 @@
                                         <div class="text-gray-800">{{ $comment->comment }}</div>
                                     </div>
                                 @empty
-                                    <div class="text-gray-400">No comments yet.</div>
+                                    <div class="text-gray-400">Tiada komen.</div>
                                 @endforelse
                             </div>
                         </div>
 
                         <form method="POST" action="{{ route('tickets.addComment', $ticket) }}" class="bg-gray-50 rounded p-4">
                             @csrf
-                            <label for="comment" class="block font-semibold mb-1">Add Comment</label>
+                            <label for="comment" class="block font-semibold mb-1">Tambah Komen</label>
                             <textarea name="comment" id="comment" rows="3" class="w-full rounded border-gray-300 mb-2" required></textarea>
-                            <button type="submit" class="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700 text-sm">Submit</button>
+                            <button type="submit" class="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700 text-sm">Hantar</button>
                         </form>
                     </div>
 
@@ -87,7 +97,7 @@
                                 <form method="POST" action="{{ route('tickets.updateCategory', $ticket) }}" class="flex items-center gap-2">
                                     @csrf
                                     @method('PATCH')
-                                    <label for="category_id" class="font-semibold text-gray-700">Category:</label>
+                                    <label for="category_id" class="font-semibold text-gray-700">Kategori:</label>
                                     <select name="category_id" id="category_id" class="rounded border-gray-300 text-xs" onchange="this.form.submit()">
                                         @foreach($viewCategories as $id => $name)
                                             <option value="{{ $id }}" @if($ticket->category_id == $id) selected @endif>
@@ -101,14 +111,14 @@
                                 </form>
                             @else
                                 <div>
-                                    <span class="font-semibold text-gray-700">Category:</span>
+                                    <span class="font-semibold text-gray-700">Kategori:</span>
                                     <span class="ml-2 text-xs">{{ $ticket->category?->name ?? '-' }}</span>
                                 </div>
                             @endif
                         </div>
                         {{-- Assignees Interface --}}
                         <div class="mb-6">
-                            <div class="font-semibold text-gray-700 mb-2">Assignees</div>
+                            <div class="font-semibold text-gray-700 mb-2">Petugas</div>
                             <div class="flex flex-wrap gap-2">
                                 @foreach($ticket->assignees as $assignee)
                                     @php
@@ -142,7 +152,7 @@
                                         <input type="hidden" name="user_id" id="assignee-user-id">
                                         <div id="autocomplete-results" class="absolute z-10 bg-white border border-gray-300 w-full mt-1 rounded shadow-lg hidden"></div>
                                     </div>
-                                    <button type="submit" class="px-2 py-1 bg-blue-500 text-white rounded text-xs">Add</button>
+                                    <button type="submit" class="px-2 py-1 bg-blue-500 text-white rounded text-xs">Tambah</button>
                                 </form>
                             @endif
                         </div>
@@ -152,7 +162,7 @@
                                 <form method="POST" action="{{ route('tickets.updateStatus', $ticket) }}" class="">
                                     @csrf
                                     @method('PATCH')
-                                    <div class="font-semibold text-gray-700 mb-2">Update Status</div>
+                                    <div class="font-semibold text-gray-700 mb-2">Kemaskini Status</div>
                                     <div class="relative w-full">
                                         <select name="ticket_status_id" id="ticket_status_id" class="text-xs rounded border-gray-300">
                                             @foreach($statuses as $id => $status)
@@ -161,7 +171,7 @@
                                                 </option>
                                             @endforeach
                                         </select>
-                                        <button type="submit" class="px-2 py-1 bg-blue-500 text-white rounded text-xs">Update</button>
+                                        <button type="submit" class="px-2 py-1 bg-blue-500 text-white rounded text-xs">Kemaskini</button>
                                     </div>
                                 </form>
                             @endif
