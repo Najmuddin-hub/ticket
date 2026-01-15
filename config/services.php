@@ -35,4 +35,10 @@ return [
         ],
     ],
 
+    // ✅ ADD THIS
+    'hr' => [
+        'url' => env('HR_API_URL'),
+        'key' => env('HR_API_KEY'),
+    ],
+
 ];
