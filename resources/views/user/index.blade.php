@@ -52,11 +52,11 @@
                     <thead class="bg-gray-50">
                         <tr>
                             <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">ID</th>
-                            <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Name</th>
-                            <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Email</th>
-                            <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Type</th>
-                            <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Department / Vendor</th>
-                            <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Actions</th>
+                            <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Nama</th>
+                            <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">ID Staf</th>
+                            <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Jenis</th>
+                            <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Departmen / Seksyen</th>
+                            <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Aksi</th>
                         </tr>
                     </thead>
                     <tbody class="bg-white divide-y divide-gray-100">

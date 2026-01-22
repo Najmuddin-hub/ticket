@@ -69,15 +69,42 @@ class AuthenticatedSessionController extends Controller
     $staff = $json['staff'] ?? [];
     $name = $staff['name'] ?? $staffId;
 
-    // Create/update local user. Store staff_id inside users.email (as you want)
+    //$adminIds = config('auth.admin_staff_ids');
+
+    //$userType = in_array($staffId, $adminIds)
+      //  ? 'admin'
+      //  : 'user';
+
+    // 🔐 Determine user role by staff ID
+    $adminIds = config('auth.admin_staff_ids');
+    $itIds    = config('auth.it_staff_ids');
+
+    if (in_array($staffId, $adminIds)) {
+        $userType = 'admin';
+    } elseif (in_array($staffId, $itIds)) {
+        $userType = 'it';
+    } else {
+        $userType = 'user';
+    }
+
     $user = User::updateOrCreate(
-        ['email' => $staffId],
+        ['email'=> $staffId],
         [
             'name' => $name,
-            'user_type' => 'user', // change if you decide roles later
-            'password' => Hash::make(str()->random(32)), // local password not used
+            'user_type' => $userType,
+            'password' => Hash::make(str()->random(32)),
         ]
     );
+
+    // Create/update local user. Store staff_id inside users.email (as you want)
+    //$user = User::updateOrCreate(
+      //  ['email' => $staffId],
+       // [
+        //    'name' => $name,
+        //    'user_type' => 'user', // change if you decide roles later
+        //    'password' => Hash::make(str()->random(32)), // local password not used
+        //]
+    //);
 
     Auth::login($user, $request->boolean('remember'));
     $request->session()->regenerate();

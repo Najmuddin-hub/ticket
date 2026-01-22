@@ -16,8 +16,8 @@
 <body class="antialiased bg-gray-50 min-h-screen flex flex-col">
     <div class="hero-bg py-16">
         <div class="max-w-3xl mx-auto text-center text-white">
-            <h1 class="text-4xl md:text-5xl font-bold mb-4">Tiket Aduan Kraftangan</h1>
-            <p class="text-lg md:text-xl mb-8">Laman web aduan Perbadanan Kemajuan Kraftangan Malaysia.</p>
+            <h1 class="text-4xl md:text-5xl font-bold mb-4">Aduan & Pinjaman Peralatan ICT Kraftangan</h1>
+            <p class="text-lg md:text-xl mb-8">Laman web aduan dan permohonan pinjaman peralatan ICT Perbadanan Kemajuan Kraftangan Malaysia.</p>
             @auth
                 <a href="{{ route('dashboard') }}" class="inline-block px-6 py-3 bg-white text-blue-700 font-semibold rounded shadow hover:bg-blue-50 transition">Go to Dashboard</a>
             @else
@@ -39,8 +39,8 @@
                     <div class="mb-3">
                         <svg class="mx-auto h-10 w-10 text-green-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"></path></svg>
                     </div>
-                    <h3 class="font-semibold text-lg mb-2">Sistem  Emel</h3>
-                    <p class="text-gray-500 text-sm">Notifikasi melalui emel.</p>
+                    <h3 class="font-semibold text-lg mb-2">Sistem Permohonan Pinjaman</h3>
+                    <p class="text-gray-500 text-sm">Laptop dan kamera.</p>
                 </div>
                 <div class="bg-white rounded-xl shadow p-6 text-center">
                     <div class="mb-3">
